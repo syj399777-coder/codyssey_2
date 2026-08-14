@@ -107,6 +107,8 @@ class QuizGame:
             print("문제 내용은 비어있을 수 없습니다.")
             question = input("문제를 입력하세요: ").strip()
 
+
+
         choices = []
         for i in range(1, 5):
             choice = input(f"선택지 {i}: ").strip()
