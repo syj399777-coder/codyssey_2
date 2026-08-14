@@ -74,8 +74,9 @@ class QuizGame:
             print("\n등록된 퀴즈가 없습니다.")
             return
 
-        print(f"\n▶ 퀴즈를 시작합니다! (총 {len(self.quizzes)}문제)")
-        score = 0
+        total_questions = len(self.quizzes)
+        print(f"\n▶ 퀴즈를 시작합니다! (총 {total_questions}문제)")
+        correct_count = 0
 
         for idx, q in enumerate(self.quizzes, 1):
             print(f"\n[문제 {idx}] {q.question}")
@@ -89,15 +90,21 @@ class QuizGame:
 
             if user_ans == q.answer:
                 print("정답입니다!")
-                score += 1
+                correct_count += 1
             else:
                 print(f"틀렸습니다. 정답은 {q.answer}번입니다.")
 
-        print(f"\n결과: {len(self.quizzes)}문제 중 {score}문제 정답!")
+        # 💯 100점 만점 계산 알고리즘 (맞힌 개수 / 전체 개수 * 100)
+        score = int((correct_count / total_questions) * 100)
+
+        print(f"\n========================================")
+        print(f"🏆 결과: {total_questions}문제 중 {correct_count}문제 정답! ({score}점)")
+        
         if score > self.best_score:
             self.best_score = score
             self.save_data()
-            print("★ 새로운 최고 점수입니다! ★")
+            print("🎉 새로운 최고 점수입니다!")
+        print(f"========================================")
 
             # 2. 퀴즈 추가
     def add_quiz(self):
@@ -137,4 +144,4 @@ class QuizGame:
 
     # 4. 점수 확인
     def show_score(self):
-        print(f"\n 최고 점수: {self.best_score}점 (총 {len(self.quizzes)}문제 기준)")
+        print(f"\n🏆 최고 점수: {self.best_score}점 (100점 만점)")

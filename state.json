@@ -1,0 +1,65 @@
+{
+    "quizzes": [
+        {
+            "question": "파이썬의 창시자는 누구일까요?",
+            "choices": [
+                "Guido van Rossum",
+                "Linus Torvalds",
+                "James Gosling",
+                "Steve Jobs"
+            ],
+            "answer": 1
+        },
+        {
+            "question": "다음 중 파이썬의 기본 자료형이 아닌 것은?",
+            "choices": [
+                "list",
+                "dict",
+                "str",
+                "array"
+            ],
+            "answer": 4
+        },
+        {
+            "question": "파이썬에서 화면에 내용을 출력하는 함수는?",
+            "choices": [
+                "console.log()",
+                "print()",
+                "printf()",
+                "Write-Output"
+            ],
+            "answer": 2
+        },
+        {
+            "question": "파이썬 파일의 확장자는 무엇일까요?",
+            "choices": [
+                ".java",
+                ".cpp",
+                ".py",
+                ".html"
+            ],
+            "answer": 3
+        },
+        {
+            "question": "조건문을 작성할 때 사용하는 키워드는?",
+            "choices": [
+                "if",
+                "for",
+                "while",
+                "def"
+            ],
+            "answer": 1
+        },
+        {
+            "question": "1",
+            "choices": [
+                "1",
+                "2",
+                "3",
+                "4"
+            ],
+            "answer": 1
+        }
+    ],
+    "best_score": 100
+}
