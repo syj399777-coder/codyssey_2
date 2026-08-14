@@ -52,3 +52,18 @@ class QuizGame:
                 json.dump(data, f, ensure_ascii=False, indent=4)
         except Exception as e:
             print(f"데이터 저장 실패: {e}")
+
+            # 데이터 불러오기 (state.json)
+    def load_data(self):
+        if not os.path.exists(self.filename):
+            self.create_default_quizzes()
+            return
+
+        try:
+            with open(self.filename, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                self.quizzes = [Quiz.from_dict(q) for q in data.get("quizzes", [])]
+                self.best_score = data.get("best_score", 0)
+        except Exception:
+            print("데이터 파일이 손상되었거나 읽을 수 없어 기본 데이터로 초기화합니다.")
+            self.create_default_quizzes()
