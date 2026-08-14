@@ -84,3 +84,84 @@ quiz_game/
     "best_score": 5
 }
 
+
+
+
+
+---
+
+데이터는 프로젝트 루트의 state.json에 UTF-8 인코딩으로 저장하고 불러온다.
+(한글이 깨지지 않는 안전한 방식으로, 최상위 폴더에 state.json 파일을 만들어서 퀴즈랑 점수를 기록해 둬라")
+
+# 1. 파일 이름이 그냥 "state.json" -> 프로젝트 루트 위치에 생성됨
+def __init__(self, filename="state.json"):
+
+# 2. 저장할 때 encoding="utf-8" 적용 -> 한글 안 깨짐[cite: 1]
+with open(self.filename, "w", encoding="utf-8") as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
+
+# 3. 불러올 때 encoding="utf-8" 적용 -> 이전 데이터 그대로 가져옴[cite: 1]
+with open(self.filename, "r", encoding="utf-8") as f:
+    data = json.load(f)
+
+---
+최소 1회 이상의 브랜치 생성 및 병합(checkout, merge) 기록이 있다
+
+syj3997773997@c3r9s5 quiz_game % git log --oneline --graph
+*   1d66c77 (HEAD -> main, origin/main, origin/HEAD) Merge branch 'feature/play-quiz' into main
+|\  
+| * 5514e6c (feature/refactor-score) Refactor: 점수 계산 및 예외 
+처리 로직 검토
+|/  
+* c60db4a Refactor: 100점 만점 점수 계산 알고리즘 반영
+* 475dc47 Docs: README.md 작성
+* 084db1c (feature/play-quiz) Feat: 퀴즈 풀기 게임 진행 로직 추가
+* 23af6b7 메인함수 및 json 추가
+* fe6d1a5 퀴즈 목록 & 점수확인
+* fba6ae1 퀴즈 추가
+* 803adaa 퀴즈 풀기
+* 3630724  데이터 불러오기 (state.json)
+
+
+우리가 작성한 Git 로그는 사실 아래와 같은 일이 일어났다고 적혀 있는 작업 일지(로그)입니다.
+
+Plaintext
+*   1d66c77 Merge branch 'feature/play-quiz' into main
+|\  
+| * 5514e6c Refactor: 점수 계산 및 예외 처리 로직 검토
+|/  
+* c60db4a Refactor: 100점 만점 점수 계산 알고리즘 반영
+
+1. |/ (가지가 갈라지는 모양)
+"원본 보고서 복사본 만들기"
+
+의미: 메인 파일(c60db4a)을 수정하다가, 혹시 몰라 '실험용 사본 파일'을 하나 새로 복사해 만들었습니다.
+
+요구사항: 과제 조건의 checkout (브랜치 생성 및 이동)을 완벽히 했다는 증거입니다.
+
+2. | * 5514e6c (옆에 있는 별표)
+"사본 파일에서 안전하게 작업하기"
+
+의미: 원본은 가만히 두고, 아까 만든 사본 파일 안에서만 점수 계산 기능을 새로 다듬고 저장했습니다.
+
+3. |\ (가지가 다시 원본으로 들어가는 모양)
+"사본 내용을 원본으로 합치기"
+
+의미: 사본에서 작업한 내용이 문제없이 잘 작동해서, 원본 파일로 최종 적용(합체)시켰습니다.
+
+요구사항: 과제 조건의 merge (병합)를 완벽히 했다는 증거입니다.
+
+4. * 1d66c77 (맨 위 합쳐진 결승점)
+"최종 통합 완료 보고서"
+
+의미: 사본과 원본이 합쳐져 완성된 최종 버전입니다.
+
+옆에 붙은 (HEAD -> main, origin/main) 표시의 뜻:
+
+main: 내 컴퓨터의 최종 파일
+
+origin/main: GitHub 웹사이트에 올린 최종 파일
+
+즉, "내 컴퓨터 작업과 GitHub 웹사이트 작업이 100% 똑같이 업로드 완료되었다!"는 뜻입니다.
+
+---
