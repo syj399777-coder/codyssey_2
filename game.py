@@ -123,3 +123,16 @@ class QuizGame:
         self.quizzes.append(new_quiz)
         self.save_data()
         print("퀴즈가 추가되었습니다!")
+
+        # 3. 퀴즈 목록
+    def list_quizzes(self):
+        print(f"\n■ 등록된 퀴즈 목록 (총 {len(self.quizzes)}개)")
+        if not self.quizzes:
+            print("등록된 퀴즈가 없습니다.")
+            return
+        for idx, q in enumerate(self.quizzes, 1):
+            print(f"[{idx}] {q.question}")
+
+    # 4. 점수 확인
+    def show_score(self):
+        print(f"\n 최고 점수: {self.best_score}점 (총 {len(self.quizzes)}문제 기준)")
