@@ -122,6 +122,7 @@ syj3997773997@c3r9s5 quiz_game % git log --oneline --graph
 
 
 우리가 작성한 Git 로그는 사실 아래와 같은 일이 일어났다고 적혀 있는 작업 일지(로그)입니다.
+<img width="471" height="205" alt="Image" src="https://github.com/user-attachments/assets/4993ac91-e868-4184-b233-cc529da662a6" />
 
 Plaintext
 *   1d66c77 Merge branch 'feature/play-quiz' into main
@@ -163,6 +164,11 @@ origin/main: GitHub 웹사이트에 올린 최종 파일
 즉, "내 컴퓨터 작업과 GitHub 웹사이트 작업이 100% 똑같이 업로드 완료되었다!"는 뜻입니다.
 
 ---
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> temp-work
 
 ### 🛡️ 데이터 파일 예외 처리 및 자동 복구 시스템
 
