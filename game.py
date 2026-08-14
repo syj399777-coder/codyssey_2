@@ -67,3 +67,34 @@ class QuizGame:
         except Exception:
             print("데이터 파일이 손상되었거나 읽을 수 없어 기본 데이터로 초기화합니다.")
             self.create_default_quizzes()
+
+            # 1. 퀴즈 풀기
+    def play_quiz(self):
+        if not self.quizzes:
+            print("\n등록된 퀴즈가 없습니다.")
+            return
+
+        print(f"\n▶ 퀴즈를 시작합니다! (총 {len(self.quizzes)}문제)")
+        score = 0
+
+        for idx, q in enumerate(self.quizzes, 1):
+            print(f"\n[문제 {idx}] {q.question}")
+            for i, choice in enumerate(q.choices, 1):
+                print(f"  {i}. {choice}")
+
+            user_ans = self.input_int("정답 입력 (1-4): ", 1, 4)
+            if user_ans is None:
+                print("퀴즈 풀기가 중단되었습니다.")
+                return
+
+            if user_ans == q.answer:
+                print("정답입니다!")
+                score += 1
+            else:
+                print(f"틀렸습니다. 정답은 {q.answer}번입니다.")
+
+        print(f"\n결과: {len(self.quizzes)}문제 중 {score}문제 정답!")
+        if score > self.best_score:
+            self.best_score = score
+            self.save_data()
+            print("★ 새로운 최고 점수입니다! ★")
