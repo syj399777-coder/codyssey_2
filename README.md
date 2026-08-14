@@ -60,29 +60,27 @@ quiz_game/
 └── README.md      # 프로젝트 설명 및 사용 문서
 
 
-## 💾 6. 데이터 파일 설명 
+### 💾 6. 데이터 파일 및 입출력 설명 (`state.json`)
 
-(state.json)파일 경로: 프로젝트 루트 디렉터리 (/state.json)
-역할: 프로그램을 종료하거나 재시작해도 등록된 퀴즈와 최고 점수가 유지되도록 영구 저장합니다.
-인코딩: UTF-8
-
-
-📊 데이터 스키마 예시JSON{
-
-    "quizzes": [
-        {
-            "question": "파이썬의 창시자는 누구일까요?",
-            "choices": [
-                "Guido van Rossum",
-                "Linus Torvalds",
-                "James Gosling",
-                "Steve Jobs"
-            ],
-            "answer": 1
-        }
-    ],
-    "best_score": 5
-}
+* **파일 위치**: 프로젝트 최상위 루트 디렉터리 (`/state.json`)
+* **인코딩 설정**: `encoding="utf-8"`, `ensure_ascii=False` 적용 (운영체제 간 한글 깨짐 완전 방지)
+* **데이터 스키마 구조**:
+  ```json
+  {
+      "quizzes": [
+          {
+              "question": "파이썬의 창시자는 누구일까요?",
+              "choices": [
+                  "Guido van Rossum",
+                  "Linus Torvalds",
+                  "James Gosling",
+                  "Steve Jobs"
+              ],
+              "answer": 1
+          }
+      ],
+      "best_score": 100
+  }
 
 
 
@@ -166,3 +164,62 @@ origin/main: GitHub 웹사이트에 올린 최종 파일
 즉, "내 컴퓨터 작업과 GitHub 웹사이트 작업이 100% 똑같이 업로드 완료되었다!"는 뜻입니다.
 
 ---
+<<<<<<< HEAD
+=======
+
+### 🛡️ 데이터 파일 예외 처리 및 자동 복구 시스템
+
+본 프로그램은 `state.json` 파일의 존재 여부 및 파일 상태를 감지하여 프로그램이 중단 없이 안전하게 실행되도록 예외 처리 시스템을 구축했습니다.
+
+* **1. 파일이 존재하지 않는 경우 (`FileNotFoundError`)**
+  * 프로그램 최초 실행 시 `state.json` 파일이 없어도 에러로 종료되지 않습니다.
+  * 시스템에 내장된 **기본 퀴즈 데이터(Default Data)**를 자동으로 로드한 후, 프로젝트 루트 디렉터리에 `state.json` 파일을 즉시 생성합니다.
+
+* **2. 파일이 손상되었거나 형식이 올바르지 않은 경우 (`json.JSONDecodeError`)**
+  * 사용자의 실수나 파일 수정으로 인해 JSON 형식이 깨지거나 텅 빈 파일이 된 경우를 감지합니다.
+  * 사용자에게 `"[경고] 데이터 파일이 손상되었습니다."` 안내 메시지를 출력한 뒤, **기본 퀴즈 데이터로 자동 초기화 및 복구**하여 정상적인 게임 플레이를 보장합니다.
+
+* **3. 한글 깨짐 방지 및 UTF-8 인코딩 (`UTF-8` & `ensure_ascii=False`)**
+  * 파일 읽기/쓰기 시 `encoding="utf-8"` 옵션을 명시하여 운영체제(Windows/Mac) 환경에 구애받지 않고 한글 데이터의 영속성을 보장합니다.
+
+  ---
+  ### 🧩 Quiz 클래스 (`quiz.py`) 구조 및 설계
+
+개별 퀴즈 데이터를 객체지향(OOP) 스타일로 캡슐화하여 관리합니다.
+
+* **속성 (Attributes)**
+  * `question` (str): 퀴즈 문제 텍스트
+  * `choices` (list): 4개의 보기 문항 리스트
+  * `answer` (int): 정답 번호 (1~4 범위의 정수)
+
+* **주요 메서드 (Methods)**
+  * `display(index)`: 문제 번호, 질문, 4개 선택지를 보기 좋게 터미널에 출력합니다.
+  * `is_correct(user_answer)`: 사용자가 입력한 번호와 정답 번호를 비교하여 `True`/`False`를 반환합니다.
+  * `to_dict()`: `state.json` 파일에 저장할 수 있도록 객체 데이터를 딕셔너리 형태로 변환합니다.
+
+  ---
+  ### 🎮 QuizGame 클래스 (`game.py`) 구조 및 역할
+
+게임의 전체 데이터 상태 관리 및 제어 로직을 총괄하는 컨트롤러 클래스입니다.
+
+* **속성 (Attributes)**
+  * `quizzes` (list[Quiz]): `Quiz` 객체들로 이루어진 퀴즈 목록
+  * `best_score` (int): 현재까지 기록된 최고 점수
+  * `filename` (str): 데이터가 영구 저장될 JSON 파일 경로 (`state.json`)
+
+* **주요 메서드 (Methods)**
+  * `load_data()`: `state.json` 파일을 읽어와 퀴즈 목록과 최고 점수를 불러옵니다. (파일 부재/손상 예외 처리 포함)
+  * `save_data()`: 현재 퀴즈 데이터와 최고 점수를 UTF-8 인코딩으로 `state.json`에 저장합니다.
+  * `play_quiz()`: 등록된 퀴즈를 순서대로 출제하고 정답을 판별하며, 최종 점수 계산 및 최고 점수 갱신을 수행합니다.
+  * `add_quiz()`: 사용자로부터 문제, 4개 선택지, 정답 번호를 안전하게 입력받아 새로운 퀴즈를 추가합니다.
+  * `view_quizzes()`: 현재 등록된 모든 퀴즈의 목록을 조회합니다.
+  * `view_best_score()`: 누적 최고 점수를 확인합니다.
+  ---
+입출력 예외 처리 및 데이터 영속화:
+
+load_data(): 프로그램 시작 시 state.json을 읽어와 메모리에 로드합니다.
+
+save_data(): 퀴즈 추가, 최고 점수 갱신 등 상태 변경 시 자동 호출되어 파일에 최신화됩니다.
+
+안정성 보장: 파일 미존재(FileNotFoundError) 또는 파일 손상(json.JSONDecodeError) 시 프로그램이 튕기지 않고 안내 메시지와 함께 기본 데이터로 안전하게 자동 복구됩니다.
+>>>>>>> 3fd4dbc (readme 수정2)
